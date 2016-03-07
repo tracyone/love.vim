@@ -30,20 +30,33 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Core command
-let g:love_support_option = ["cmdheight","gfn","gfw","listchars"]
+let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
+            \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
+            \"bg","fenc"]
 
 let g:love_config_file = $VIMFILES."/love.ini"
 
 command! Love call s:Love()
+command! LoveClean call s:LoveClean()
+
 
 " write to ini file
 function! s:Love()
-    echom "Saving setting ..."
-    let l:tmp_dict = {"basic":{}}
+    call s:EchoWarning("Saving setting ...") 
+    let l:tmp_dict = {"basic":{},"advance":{}}
     for l:i in g:love_support_option
         let l:tmp_dict["basic"][l:i]=s:GetOptionValue(l:i)
     endfor
+    let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
     call IniParser#Write(l:tmp_dict,g:love_config_file)
+endfunction
+
+" clear config file
+"
+function s:LoveClean()
+    if !delete(g:love_config_file)
+        call s:EchoWarning(g:love_config_file." has been deleted from disk")
+    endif
 endfunction
 
 function! s:GetOptionValue(option)
@@ -55,11 +68,22 @@ endfunction
 
 " read then apply setting
 function! s:Apply()
-    let l:tmp_dict = IniParser#Read(g:love_config_file)
-    for l:i in g:love_support_option
-        exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
-    endfor
+    if  filereadable(g:love_config_file)
+        let l:tmp_dict = IniParser#Read(g:love_config_file)
+        for l:i in g:love_support_option
+            if l:tmp_dict["basic"][l:i] =~ '^\d\+'
+                exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
+            else
+                exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
+            endif
+        endfor
+        exec "colorscheme ".l:tmp_dict["advance"]["colorscheme"]
+    endif
 endfunction
+
+func! s:EchoWarning(str)
+    echohl WarningMsg | echo a:str | echohl None
+endfunc
 
 call s:Apply()
 
