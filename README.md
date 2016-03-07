@@ -60,3 +60,8 @@ let g:love_config_file = $VIMFILES."/love.ini"
 # TODO
 
 1. Document
+
+# Special Thanks
+
+IniParser lib is from [xuhdev/vim-IniParser](https://github.com/xuhdev/vim-IniParser)
+
