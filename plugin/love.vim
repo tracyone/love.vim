@@ -43,12 +43,35 @@ command! LoveClean call s:LoveClean()
 " write to ini file
 function! s:Love()
     call s:EchoWarning("Saving setting ...") 
-    let l:tmp_dict = {"basic":{},"advance":{}}
+    if  filereadable(g:love_config_file)
+        let l:tmp_dict = IniParser#Read(g:love_config_file)
+    else
+        let l:tmp_dict = {"basic":{},"advance":{}}
+    endif
+
     for l:i in g:love_support_option
-        let l:tmp_dict["basic"][l:i]=s:GetOptionValue(l:i)
+        let l:new_val =s:GetOptionValue(l:i)
+        "exist and not equal
+        let l:is_key_exist = get(l:tmp_dict["basic"],l:i,-99)
+        if  l:is_key_exist != -99 && l:tmp_dict["basic"][l:i] != l:new_val
+            let l:tmp_dict["basic"][l:i]=l:new_val
+        elseif l:is_key_exist == -99
+            let l:tmp_dict["basic"][l:i]=l:new_val
+        endif
     endfor
-    let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
-    call IniParser#Write(l:tmp_dict,g:love_config_file)
+    "specfial option &advance
+    let l:is_key_exist = get(l:tmp_dict["advance"],l:i,-99)
+    if l:is_key_exist != -99 && l:tmp_dict["advance"]["colorscheme"] != g:colors_name
+        let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+    elseif l:is_key_exist == -99
+        let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+    endif
+
+    let l:ret = IniParser#Write(l:tmp_dict,g:love_config_file)
+    "return list if success
+    if type(l:ret) != type([])
+        call s:EchoWarning("Save falied!Please check the file permission.")
+    endif
 endfunction
 
 " clear config file
@@ -68,16 +91,28 @@ endfunction
 
 " read then apply setting
 function! s:Apply()
-    if  filereadable(g:love_config_file)
+    if filereadable(g:love_config_file)
         let l:tmp_dict = IniParser#Read(g:love_config_file)
-        for l:i in g:love_support_option
-            if l:tmp_dict["basic"][l:i] =~ '^\d\+'
-                exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
+        if type(l:tmp_dict) == type({})
+            for l:i in g:love_support_option
+                if get(l:tmp_dict["basic"],l:i,-99) != -99 
+                    if l:tmp_dict["basic"][l:i] =~ '^\d\+'
+                        exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
+                    else
+                        exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
+                    endif
+                else
+                    call s:EchoWarning("No Such key: ".l:i.",try :LoveClean")
+                endif
+            endfor
+            if get(l:tmp_dict["advance"],"colorscheme",-99) != -99
+                exec "colorscheme ".l:tmp_dict["advance"]["colorscheme"]
             else
-                exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
+                call s:EchoWarning("No Such key!Try :LoveClean first.")
             endif
-        endfor
-        exec "colorscheme ".l:tmp_dict["advance"]["colorscheme"]
+        else
+            call s:EchoWarning("Apply failed.Try :LoveClean first.")
+        endif
     endif
 endfunction
 
