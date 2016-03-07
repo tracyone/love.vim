@@ -56,9 +56,10 @@ function! s:Love()
         let l:new_val =s:GetOptionValue(l:i)
         "exist and not equal
         let l:is_key_exist = get(l:tmp_dict["basic"],l:i,-99)
+
         if  l:is_key_exist != -99 && l:tmp_dict["basic"][l:i] != l:new_val
             let l:tmp_dict["basic"][l:i]=l:new_val
-        elseif l:is_key_exist == -99
+        elseif l:is_key_exist == -99  
             let l:tmp_dict["basic"][l:i]=l:new_val
         endif
     endfor
@@ -100,14 +101,15 @@ function! s:Apply()
         let l:tmp_dict = IniParser#Read(g:love_config_file)
         if type(l:tmp_dict) == type({})
             for l:i in g:love_support_option
-                if get(l:tmp_dict["basic"],l:i,-99) != -99 
+                let l:is_key_exist =  get(l:tmp_dict["basic"],l:i,-99)
+                if  l:is_key_exist != -99  && l:tmp_dict["basic"][l:i] != "" "exist not empty
                     if l:tmp_dict["basic"][l:i] =~ '^\d\+'
                         exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
                     else
                         exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
                     endif
                 else
-                    call s:EchoWarning("No Such key: ".l:i.",try :LoveClean")
+                    if l:is_key_exist == -99 | call s:EchoWarning("No Such key: ".l:i.",try :LoveClean") | endif
                 endif
             endfor
             if get(l:tmp_dict["advance"],"colorscheme",-99) != -99
