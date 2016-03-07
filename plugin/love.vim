@@ -30,11 +30,15 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Core command
+if !exists('g:love_support_option')
 let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
             \"bg","fenc"]
+endif
 
-let g:love_config_file = $VIMFILES."/love.ini"
+if !exists('g:love_config_file')
+    let g:love_config_file = $VIMFILES."/love.ini"
+endif
 
 command! Love call s:Love()
 command! LoveClean call s:LoveClean()
