@@ -22,7 +22,7 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 "=============================================================================
-if exists("g:loaded_love")
+if exists("g:loaded_love") || &compatible
     finish
 endif
 
@@ -30,17 +30,35 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Core command
+let g:love_support_option = ["cmdheight","gfn","gfw","listchars"]
+
+let g:love_config_file = $VIMFILES."/love.ini"
 
 command! Love call s:Love()
 
 " write to ini file
 function! s:Love()
-    echom "Not implement yet now"
+    echom "Saving setting ..."
+    let l:tmp_dict = {"basic":{}}
+    for l:i in g:love_support_option
+        let l:tmp_dict["basic"][l:i]=s:GetOptionValue(l:i)
+    endfor
+    call IniParser#Write(l:tmp_dict,g:love_config_file)
+endfunction
+
+function! s:GetOptionValue(option)
+    redir => l:x
+    silent! exec "echo &".a:option 
+    redir END
+    return l:x
 endfunction
 
 " read then apply setting
 function! s:Apply()
-    echom "Apply setting ..."
+    let l:tmp_dict = IniParser#Read(g:love_config_file)
+    for l:i in g:love_support_option
+        exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
+    endfor
 endfunction
 
 call s:Apply()
