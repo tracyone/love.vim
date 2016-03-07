@@ -42,7 +42,6 @@ command! LoveClean call s:LoveClean()
 
 " write to ini file
 function! s:Love()
-    call s:EchoWarning("Saving setting ...") 
     if  filereadable(g:love_config_file)
         let l:tmp_dict = IniParser#Read(g:love_config_file)
     else
@@ -71,6 +70,8 @@ function! s:Love()
     "return list if success
     if type(l:ret) != type([])
         call s:EchoWarning("Save falied!Please check the file permission.")
+    else
+        call s:EchoWarning("Setting have been saved!") 
     endif
 endfunction
 
