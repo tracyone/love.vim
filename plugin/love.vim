@@ -33,7 +33,7 @@ set cpo&vim
 if !exists('g:love_support_option')
 let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc"]
+            \"bg","fenc","sh"]
 endif
 
 if !exists('g:love_config_file')
