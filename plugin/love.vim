@@ -104,7 +104,10 @@ function! s:Apply()
         if type(l:tmp_dict) == type({})
             for l:i in g:love_support_option
                 let l:is_key_exist =  get(l:tmp_dict["basic"],l:i,-99)
-                if  l:is_key_exist != -99  && l:tmp_dict["basic"][l:i] != "" "exist not empty
+                if  l:is_key_exist != -99 
+                    if  l:i =~ '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict["basic"][l:i] == ""
+                        continue  "ignore empty gui font setting
+                    endif
                     if l:tmp_dict["basic"][l:i] =~ '^\d\+'
                         exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
                     else
