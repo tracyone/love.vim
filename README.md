@@ -48,7 +48,7 @@ You don't need to do any config.But you can do it anyway
 
 let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc"]
+            \"bg","fenc","sh"]
 
 "The location of config file,this Plugin read write this file automatically"
 let g:love_config_file = $VIMFILES."/love.ini"
@@ -57,10 +57,9 @@ let g:love_config_file = $VIMFILES."/love.ini"
 
 **note**:colorscheme setting is also support.
 
-# TODO & issue
+# TODO 
 
-1. Document
-2. Colorscheme bug
+1.What else can be loved except option？That is a question.
 
 # Special Thanks
 
