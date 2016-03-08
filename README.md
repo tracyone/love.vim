@@ -57,9 +57,10 @@ let g:love_config_file = $VIMFILES."/love.ini"
 
 **note**:colorscheme setting is also support.
 
-# TODO
+# TODO & issue
 
 1. Document
+2. Colorscheme bug
 
 # Special Thanks
 
