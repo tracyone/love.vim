@@ -1,0 +1,109 @@
+*love.txt*             love.vim 's help doc         
++--------------------------------------------------------------------------+~
+|                       love.vim doc                                       |~
+|                     tracyone@live.cn                                     |~
++--------------------------------------------------------------------------+ ~
+
+Version: 0.1
+Author:  tracyone <tracyone@live.cn>
+
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+==============================================================================
+
+CONTENTS                                                           *Contents*
+
+Intro ------------------------------------------------------|love-intro|
+Usage ------------------------------------------------------|love-usage|
+Install ----------------------------------------------------|love-install|
+Options ----------------------------------------------------|love-options|
+
+==============================================================================
+
+INTRO                                                    *love-intro*
+
+*love.vim* is a plugin that help you save your basic vim setting without
+modifing your vimrc.
+
+Sometimes,you want change some vim setting such as colorscheme,nu,toolbar,
+menu,font size,beause you are tired of looking one thing that never change.
+
+That is my purpose to make this vim plugin.
+
+==============================================================================
+
+USAGE                                                    *love-usage*
+
+start your vim/gvim,do some setting,for example:
+>
+	:set nonu  
+	:colorscheme desert
+    :set go-=mT   "no toolbar and menu in gvim
+    :set fenc=utf-8  "creat file with utf-8 encode
+<
+Then execute:
+>
+    :Love
+<
+This will save current setting of vim(not all options are supported).
+
+you can clear your love by execute
+>
+    :LoveClean
+<
+
+==============================================================================
+
+INSTALL                                             *love-install*
+
+Use any vim plugin managers such as vim-plug(https://github.com/junegunn/vim-plug)
+>
+    Plug 'tracyone/love.vim'
+>
+>
+
+==============================================================================
+
+OPTIONS                                             *love-options*
+
+You don't need to do any config.But you can do it anyway
+
+                                                    *love_support_option*
+a list variable that content of vim options needed to "love"
+Default:
+>
+    "Default setting
+
+    " default support option,you can add others but save aciton mightbe failed 
+    "beause of some autocomand or filetype detection or some Plugin
+
+    let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
+                \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
+                \"bg","fenc","sh"]
+>
+-------
+                                                        *love_config_file*
+The location of config file,this Plugin read write this file automatically
+>
+    let g:love_config_file = $VIMFILES."/love.ini"
+<
+
+vim:tw=78:et:ft=help:norl:
