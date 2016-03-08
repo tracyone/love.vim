@@ -54,9 +54,9 @@ function! s:Love()
 
     for l:i in g:love_support_option
         let l:new_val =s:GetOptionValue(l:i)
-        "exist and not equal
         let l:is_key_exist = get(l:tmp_dict["basic"],l:i,-99)
 
+        "exist and not equal
         if  l:is_key_exist != -99 && l:tmp_dict["basic"][l:i] != l:new_val
             let l:tmp_dict["basic"][l:i]=l:new_val
         elseif l:is_key_exist == -99  
@@ -64,11 +64,13 @@ function! s:Love()
         endif
     endfor
     "specfial option &advance
-    let l:is_key_exist = get(l:tmp_dict["advance"],l:i,-99)
-    if l:is_key_exist != -99 && l:tmp_dict["advance"]["colorscheme"] != g:colors_name
-        let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
-    elseif l:is_key_exist == -99
-        let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+    if exists('g:colors_name')
+        let l:is_key_exist = get(l:tmp_dict["advance"],l:i,-99)
+        if l:is_key_exist != -99 && l:tmp_dict["advance"]["colorscheme"] != g:colors_name
+            let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+        elseif l:is_key_exist == -99
+            let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+        endif
     endif
 
     let l:ret = IniParser#Write(l:tmp_dict,g:love_config_file)
