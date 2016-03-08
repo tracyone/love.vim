@@ -20,7 +20,11 @@ All you need to do is:
     "save setting
     :Love
 	```
-4. clean love
+
+4. Next time you start vim/gvim,you will find out,your settings  
+have been applied.
+
+5. clean love. you can clear your save config by executing following command.
 
 	```vim
     "restore factory(==!) setting
