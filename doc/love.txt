@@ -88,7 +88,7 @@ OPTIONS                                             *love-options*
 You don't need to do any config.But you can do it anyway
 
                                                     *love_support_option*
-a list variable that content of vim options needed to "love"
+a list variable that content of vim options needed to be "loved"
 Default:
 >
     "Default setting
