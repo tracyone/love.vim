@@ -5,7 +5,9 @@ Save your basic vim setting without modifing your vimrc!
 All you need to do is:
 
 1. Start gvim/vim
-2. do some vim option setting in cmd window, for example
+2. do some vim option setting in cmd window or menu
+
+    for example
 
 	```vim
 	:set nonu  
@@ -32,6 +34,8 @@ have been applied.
 	```
 
 # Installation
+
+It has been tested in MS Windows, Mac OSX and `*nix`
 
 Use [vim-plug](https://github.com/junegunn/vim-plug)
 

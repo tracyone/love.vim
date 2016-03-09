@@ -75,6 +75,8 @@ You can clear your save config by executing following command.
 
 INSTALL                                             *love-install*
 
+It has been tested in MS Windows, Mac OSX and `*nix`
+
 Use any vim plugin managers such as vim-plug(https://github.com/junegunn/vim-plug)
 >
     Plug 'tracyone/love.vim'
