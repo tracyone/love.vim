@@ -108,7 +108,7 @@ function! s:Apply()
                     if  l:i =~ '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict["basic"][l:i] == ""
                         continue  "ignore empty gui font setting
                     endif
-                    if l:tmp_dict["basic"][l:i] =~ '^\d\+'
+                    if l:tmp_dict["basic"][l:i] =~ '\v^\d+$'
                         exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
                     else
                         exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
