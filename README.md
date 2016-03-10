@@ -54,7 +54,7 @@ You don't need to do any config.But you can do it anyway
 " default support option,you can add others but save aciton mightbe failed 
 "beause of some autocomand or filetype detection or some Plugin
 
-let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
+let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
             \"bg","fenc","sh"]
 
