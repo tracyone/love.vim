@@ -31,7 +31,7 @@ set cpo&vim
 
 " Core command
 if !exists('g:love_support_option')
-let g:love_support_option = ["cmdheight","gfn","gfw","listchars",
+let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
             \"bg","fenc","sh"]
 endif
