@@ -13,7 +13,7 @@ All you need to do is:
 	:set nonu  
 	:colorscheme desert
     :set go-=mT   "no toolbar and menu in gvim
-    :set fenc=utf-8  "creat file with utf-8 encode
+    :set fenc=utf-8  "create files with utf-8 encode
 	```
 
 3. execute :Love
@@ -51,8 +51,8 @@ You don't need to do any config.But you can do it anyway
 
 "Default setting
 
-" default support option,you can add others but save aciton mightbe failed 
-"beause of some autocomand or filetype detection or some Plugin
+"default support option,you can add other options but save aciton mightbe failed 
+"beause of some autocommands or filetype detection or some Plugins
 
 let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
@@ -63,11 +63,11 @@ let g:love_config_file = $VIMFILES."/love.ini"
 
 ```
 
-**note**:colorscheme setting is also support.
+**NOTE**:colorscheme setting is also support.
 
 # TODO 
 
-1.What else can be loved except option？That is a question.
+- [ ] Optimize code for saving startup time.
 
 # Special Thanks
 

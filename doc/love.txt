@@ -57,7 +57,7 @@ start your vim/gvim,do some setting,for example:
 	:set nonu  
 	:colorscheme desert
     :set go-=mT   "no toolbar and menu in gvim
-    :set fenc=utf-8  "creat file with utf-8 encode
+    :set fenc=utf-8  "create files with utf-8 encode
 <
 Then execute:
 >
@@ -96,7 +96,7 @@ Default:
     "Default setting
 
     " default support option,you can add others but save aciton mightbe failed 
-    "beause of some autocomand or filetype detection or some Plugin
+    " beause of some autocommands or filetype detection or some Plugins
 
     let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
                 \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
