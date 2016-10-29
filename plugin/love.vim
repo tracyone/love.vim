@@ -38,7 +38,7 @@ endif
 
 let s:love_default_option = ["cmdheight","gfn","gfw","linespace",
             \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc","sh"] + g:love_support_option
+            \"bg","fenc","sh","cul","textwidth"] + g:love_support_option
 
 if !exists('g:love_config_file')
     let g:love_config_file = $VIMFILES."/love.ini"
