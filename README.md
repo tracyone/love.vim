@@ -80,7 +80,8 @@ let g:love_config_file = $VIMFILES."/love.ini"
 
 # TODO 
 
-- [ ] Optimize code for saving startup time.
+- [x] Optimize code for saving startup time.
+- [ ] support global variable
 
 # Special Thanks
 
