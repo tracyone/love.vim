@@ -90,17 +90,17 @@ OPTIONS                                             *love-options*
 You don't need to do any config.But you can do it anyway
 
                                                     *love_support_option*
-a list variable that content of vim options needed to be "loved"
+a additional list variable that content of vim options needed to be "loved"
 Default:
 >
     "Default setting
+    default support option is "cmdheight","gfn","gfw","linespace",
+    "nu","rnu","ic","wrap","et","mouse","ls","stal","go","bg","fenc","sh"
 
-    " default support option,you can add others but save aciton mightbe failed 
+    " you can add others but save aciton mightbe failed 
     " beause of some autocommands or filetype detection or some Plugins
 
-    let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
-                \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-                \"bg","fenc","sh"]
+    let g:love_support_option=["cul","textwidth"]
 >
 -------
                                                         *love_config_file*

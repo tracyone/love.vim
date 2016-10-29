@@ -31,10 +31,14 @@ set cpo&vim
 
 " Core command
 if !exists('g:love_support_option')
-let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
-            \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc","sh"]
+
+let g:love_support_option=[]
+
 endif
+
+let s:love_default_option = ["cmdheight","gfn","gfw","linespace",
+            \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
+            \"bg","fenc","sh"] + g:love_support_option
 
 if !exists('g:love_config_file')
     let g:love_config_file = $VIMFILES."/love.ini"
@@ -52,7 +56,7 @@ function! s:Love()
         let l:tmp_dict = {"basic":{},"advance":{}}
     endif
 
-    for l:i in g:love_support_option
+    for l:i in s:love_default_option
         let l:new_val =s:GetOptionValue(l:i)
         let l:is_key_exist = get(l:tmp_dict["basic"],l:i,-99)
 
@@ -102,7 +106,7 @@ function! s:Apply()
     if filereadable(g:love_config_file)
         let l:tmp_dict = IniParser#Read(g:love_config_file)
         if type(l:tmp_dict) == type({})
-            for l:i in g:love_support_option
+            for l:i in s:love_default_option
                 let l:is_key_exist =  get(l:tmp_dict["basic"],l:i,-99)
                 if  l:is_key_exist != -99 
                     if  l:i =~ '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict["basic"][l:i] == ""

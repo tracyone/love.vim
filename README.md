@@ -47,16 +47,29 @@ Plug 'tracyone/love.vim'
 
 You don't need to do any config.But you can do it anyway
 
+**default support option is:**
+
+ Options    | Function
+ ------     | -------
+`cmdheight` | the height of cmd window
+`gfn`       | gui font
+`gfw`       | gui font for wide char
+`linespace` | line space width in gui
+`nu`        | absolutely line number
+`rnu`       | releative line number
+`mouse`     | mouse type
+`ls`        | whether show status line or not
+`stal`      | whether show tab line
+`go`        | gui option
+`bg`        | background type
+`fenc`      | file encode type
+`sh`        | shell type
+
 ```vim
 
-"Default setting
-
-"default support option,you can add other options but save aciton mightbe failed 
+" You can add other options but save aciton mightbe failed "
 "beause of some autocommands or filetype detection or some Plugins
-
-let g:love_support_option = ["cmdheight","gfn","gfw","linespace",
-            \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc","sh"]
+let g:love_support_option=["cul","textwidth"]
 
 "The location of config file,this Plugin read write this file automatically"
 let g:love_config_file = $VIMFILES."/love.ini"
