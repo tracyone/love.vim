@@ -23,7 +23,7 @@
 " }}}
 "=============================================================================
 
-if exists("g:loaded_love") || &compatible
+if exists('g:loaded_love') || &compatible
     finish
 endif
 
@@ -37,101 +37,101 @@ let g:love_support_option=[]
 
 endif
 
-let s:love_default_option = ["cmdheight","gfn","gfw","linespace",
-            \"nu","rnu","ic","wrap","et","mouse","ls","stal","go",
-            \"bg","fenc","sh","cul","textwidth"] + g:love_support_option
+let s:love_default_option = ['cmdheight','gfn','gfw','linespace',
+            \'nu','rnu','ic','wrap','et','mouse','ls','stal','go',
+            \'bg','fenc','sh','cul','textwidth'] + g:love_support_option
 
 if !exists('g:love_config_file')
-    let g:love_config_file = $VIMFILES."/love.ini"
+    let g:love_config_file = $VIMFILES.'/love.ini'
 endif
 
 
 
 " write to ini file
-function! love#Love()
+function! love#Love() abort
     if  filereadable(g:love_config_file)
         let l:tmp_dict = IniParser#Read(g:love_config_file)
     else
-        let l:tmp_dict = {"basic":{},"advance":{}}
+        let l:tmp_dict = {'basic':{},'advance':{}}
     endif
 
     for l:i in s:love_default_option
         let l:new_val =s:GetOptionValue(l:i)
-        let l:is_key_exist = get(l:tmp_dict["basic"],l:i,-99)
+        let l:is_key_exist = get(l:tmp_dict['basic'],l:i,-99)
 
         "exist and not equal
-        if  l:is_key_exist != -99 && l:tmp_dict["basic"][l:i] != l:new_val
-            let l:tmp_dict["basic"][l:i]=l:new_val
+        if  l:is_key_exist != -99 && l:tmp_dict['basic'][l:i] != l:new_val
+            let l:tmp_dict['basic'][l:i]=l:new_val
         elseif l:is_key_exist == -99  
-            let l:tmp_dict["basic"][l:i]=l:new_val
+            let l:tmp_dict['basic'][l:i]=l:new_val
         endif
     endfor
     "specfial option &advance
     if exists('g:colors_name')
-        let l:is_key_exist = get(l:tmp_dict["advance"],l:i,-99)
-        if l:is_key_exist != -99 && l:tmp_dict["advance"]["colorscheme"] != g:colors_name
-            let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+        let l:is_key_exist = get(l:tmp_dict['advance'],l:i,-99)
+        if l:is_key_exist != -99 && l:tmp_dict['advance']['colorscheme'] != g:colors_name
+            let l:tmp_dict['advance']['colorscheme']=g:colors_name
         elseif l:is_key_exist == -99
-            let l:tmp_dict["advance"]["colorscheme"]=g:colors_name
+            let l:tmp_dict['advance']['colorscheme']=g:colors_name
         endif
     endif
 
     let l:ret = IniParser#Write(l:tmp_dict,g:love_config_file)
     "return list if success
     if type(l:ret) != type([])
-        call s:EchoWarning("Save falied!Please check the file permission.")
+        call s:EchoWarning('Save falied!Please check the file permission.')
     else
-        call s:EchoWarning("Setting have been saved!") 
+        call s:EchoWarning('Setting have been saved!') 
     endif
 endfunction
 
 " clear config file
 "
-function love#LoveClean()
+function! love#LoveClean() abort
     if !delete(g:love_config_file)
-        call s:EchoWarning(g:love_config_file." has been deleted from disk")
+        call s:EchoWarning(g:love_config_file.' has been deleted from disk')
     endif
 endfunction
 
-function! s:GetOptionValue(option)
+function! s:GetOptionValue(option) abort
     redir => l:x
-    silent! exec "echo &".a:option 
+    silent! exec 'echo &'.a:option 
     redir END
     return l:x
 endfunction
 
 " read then apply setting
-function! love#Apply()
+function! love#Apply() abort
     if filereadable(g:love_config_file)
         let l:tmp_dict = IniParser#Read(g:love_config_file)
         if type(l:tmp_dict) == type({})
             for l:i in s:love_default_option
-                let l:is_key_exist =  get(l:tmp_dict["basic"],l:i,-99)
+                let l:is_key_exist =  get(l:tmp_dict['basic'],l:i,-99)
                 if  l:is_key_exist != -99 
-                    if  l:i =~ '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict["basic"][l:i] == ""
+                    if  l:i =~# '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict['basic'][l:i] ==? ''
                         continue  "ignore empty gui font setting
                     endif
-                    if l:tmp_dict["basic"][l:i] =~ '\v^\d+$'
-                        exec ":let &" .l:i ."=" .l:tmp_dict["basic"][l:i]
+                    if l:tmp_dict['basic'][l:i] =~# '\v^\d+$'
+                        exec ':let &' .l:i .'=' .l:tmp_dict['basic'][l:i]
                     else
-                        exec "set ".l:i."=".escape(l:tmp_dict["basic"][l:i],' \|')
+                        exec 'set '.l:i.'='.escape(l:tmp_dict['basic'][l:i],' \|')
                     endif
                 else
-                    if l:is_key_exist == -99 | call s:EchoWarning("No Such key: ".l:i.",try :LoveClean") | endif
+                    if l:is_key_exist == -99 | call s:EchoWarning('No Such key: '.l:i.',try :LoveClean') | endif
                 endif
             endfor
-            if get(l:tmp_dict["advance"],"colorscheme",-99) != -99
-                exec "colorscheme ".l:tmp_dict["advance"]["colorscheme"]
+            if get(l:tmp_dict['advance'],'colorscheme',-99) != -99
+                exec 'colorscheme '.l:tmp_dict['advance']['colorscheme']
             else
-                call s:EchoWarning("No Such key!Try :LoveClean first.")
+                call s:EchoWarning('No Such key!Try :LoveClean first.')
             endif
         else
-            call s:EchoWarning("Apply failed.Try :LoveClean first.")
+            call s:EchoWarning('Apply failed.Try :LoveClean first.')
         endif
     endif
 endfunction
 
-func! s:EchoWarning(str)
+func! s:EchoWarning(str) abort
     echohl WarningMsg | echo a:str | echohl None
 endfunc
 

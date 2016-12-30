@@ -5,7 +5,7 @@
 let s:saved_cpo = &cpo
 set cpo&vim
 
-function! IniParser#GetVersion() " {{{1
+function! IniParser#GetVersion() abort " {{{1
     " Get the version number. It equals to the version number times 100. For
     " example, version 0.1 is corresponding to 10, version 2.3 is
     " corresponding to 230
@@ -14,7 +14,7 @@ function! IniParser#GetVersion() " {{{1
 endfunction
 
 " utils {{{1
-function! s:DictModifyReclusively(dict, ...) " {{{2
+function! s:DictModifyReclusively(dict, ...) abort" {{{2
 
     if a:0 == 0 || (a:0 == 1 && type(a:1) != type([]))
         echohl ErrorMsg | 
@@ -60,7 +60,7 @@ function! s:DictModifyReclusively(dict, ...) " {{{2
     return 0
 endfunction
 
-function! s:TrimString(str, ...) " {{{2
+function! s:TrimString(str, ...) abort " {{{2
 
     if a:0 == 1
         let l:blank_chars = a:1
@@ -105,7 +105,7 @@ function! s:TrimString(str, ...) " {{{2
     return strpart(a:str, l:str_begin, l:str_end-l:str_begin+1)
 endfunction
 
-function! IniParser#Read(arg) " {{{1
+function! IniParser#Read(arg) abort" {{{1
     " Read the ini file, the parameter could be either a file name or a list
     " containing the lines of the ini file.
 
@@ -134,11 +134,11 @@ function! IniParser#Read(arg) " {{{1
         let line = s:TrimString(line)
         let l:line_len = strlen(line)
 
-        if l:line_len == 0 || line[0] == ';' || line[0] == '#'
+        if l:line_len == 0 || line[0] ==# ';' || line[0] ==# '#'
         " it's a comment line or empty line
         " do nothing
 
-        elseif line[0] == '[' && line[l:line_len-1] == ']' && l:line_len > 2
+        elseif line[0] ==# '[' && line[l:line_len-1] ==# ']' && l:line_len > 2
         " it's a group if the first character is '[' and the last is ']'
 
             " set current group to what inside the '[]'
@@ -183,7 +183,7 @@ function! IniParser#Read(arg) " {{{1
     return l:result_dic
 endfunction
 
-function! s:WriteToList(ini_sub_dict, prefix) " {{{1
+function! s:WriteToList(ini_sub_dict, prefix) abort " {{{1
 
     let l:ret_list = []
 
@@ -200,7 +200,7 @@ function! s:WriteToList(ini_sub_dict, prefix) " {{{1
     return l:ret_list
 endfunction
 
-function! IniParser#Write(ini_dict, ...) " {{{1
+function! IniParser#Write(ini_dict, ...) abort " {{{1
     " write to ini file, the first argument is a dict, whose format is the
     " same with the return value of IniParser#Read; if the second argument is
     " provided, it should be the ini file name which we want to write to, and
