@@ -5,7 +5,8 @@ dist: trusty
 
 os:
     - linux
-
+before_install:
+    - pip install --user vim-vint
 before_script:
     - vim --version
     - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
@@ -14,4 +15,4 @@ before_script:
 
 script:
     - sh /tmp/vim-vimlint/bin/vimlint.sh -l /tmp/vim-vimlint -p /tmp/vim-vimlparser -e EVL103=1 -e EVL102.l:_=1 autoload plugin
-    - vim-themis/bin/themis --reporter spec
+    - vint autoload/**/*.vim plugin/**/*.vim
