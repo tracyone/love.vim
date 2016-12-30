@@ -1,3 +1,15 @@
+# love.vim
+
+[![Build Status](https://travis-ci.org/tracyone/love.vim.svg)](https://travis-ci.org/tracyone/love.vim)
+
+<!-- vim-markdown-toc GFM -->
+* [Introdution](#introdution)
+* [Installation](#installation)
+* [config example](#config-example)
+* [TODO](#todo)
+* [Special Thanks](#special-thanks)
+
+<!-- vim-markdown-toc -->
 # Introdution
 
 Save your basic vim setting without modifing your vimrc!
