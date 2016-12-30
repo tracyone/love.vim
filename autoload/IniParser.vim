@@ -191,7 +191,7 @@ function! s:WriteToList(ini_sub_dict, prefix) " {{{1
         let l:value = a:ini_sub_dict[key]
 
         if type(l:value) == type({})
-            call extend(l:ret_list, s:WriteToList(l:value, prefix.key.'/'))
+            call extend(l:ret_list, s:WriteToList(l:value, a:prefix.key.'/'))
         elseif type(l:value) == type('')
             call add(l:ret_list, a:prefix.key.'='.l:value)
         endif
