@@ -1,6 +1,8 @@
 # love.vim
 
 [![Build Status](https://travis-ci.org/tracyone/love.vim.svg)](https://travis-ci.org/tracyone/love.vim)
+[![Doc](https://img.shields.io/badge/doc-%3Ah%20love.txt-orange.svg)](doc/love.txt)
+
 
 <!-- vim-markdown-toc GFM -->
 * [Introdution](#introdution)
