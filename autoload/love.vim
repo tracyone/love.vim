@@ -42,6 +42,13 @@ let s:love_default_option = ['cmdheight','gfn','gfw','linespace',
             \'bg','fenc','sh','cul','textwidth'] + g:love_support_option
 
 if !exists('g:love_config_file')
+    if !exists('$VIMFILES')
+        if has('unix')
+            let $VIMFILES = $HOME.'/.vim'
+        else
+            let $VIMFILES = $VIM.'/vimfiles'
+        endif
+    endif
     let g:love_config_file = $VIMFILES.'/love.ini'
 endif
 
@@ -94,10 +101,7 @@ function! love#LoveClean() abort
 endfunction
 
 function! s:GetOptionValue(option) abort
-    redir => l:x
-    silent! exec 'echo &'.a:option 
-    redir END
-    return l:x
+    return matchstr(eval('&'.a:option),"[^']*")
 endfunction
 
 " read then apply setting
