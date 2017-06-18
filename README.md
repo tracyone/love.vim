@@ -8,8 +8,6 @@
 * [Introdution](#introdution)
 * [Installation](#installation)
 * [config example](#config-example)
-* [TODO](#todo)
-* [Special Thanks](#special-thanks)
 
 <!-- vim-markdown-toc -->
 # Introdution
@@ -84,20 +82,14 @@ You don't need to do any config.But you can do it anyway
 " You can add other options but save aciton mightbe failed "
 "beause of some autocommands or filetype detection or some Plugins
 let g:love_support_option=["cul","textwidth"]
+let g:love_gui_support_option=['guicursor']
 
 "The location of config file,this Plugin read write this file automatically"
-let g:love_config_file = $VIMFILES."/love.ini"
+let g:love_config_file = $VIMFILES."/.love.vim"
+"The location of config file,this Plugin read write this file automatically"
+let g:love_gui_config_file = $VIMFILES."/.gui_love.vim"
 
 ```
 
 **NOTE**:colorscheme setting is also support.
-
-# TODO 
-
-- [x] Optimize code for saving startup time.
-- [ ] support global variable
-
-# Special Thanks
-
-IniParser lib is from [xuhdev/vim-IniParser](https://github.com/xuhdev/vim-IniParser)
 

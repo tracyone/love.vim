@@ -32,60 +32,81 @@ set cpo&vim
 
 " Core command
 if !exists('g:love_support_option')
-
-let g:love_support_option=[]
-
+    let g:love_support_option=[]
 endif
 
-let s:love_default_option = ['cmdheight','gfn','gfw','linespace',
-            \'nu','rnu','ic','wrap','et','mouse','ls','stal','go',
-            \'bg','fenc','sh','cul','textwidth'] + g:love_support_option
+if !exists('g:love_gui_support_option')
+    let g:love_gui_support_option=[]
+endif
+
+
+let s:love_default_option = ['cmdheight', 'nu', 'rnu', 'ic', 'wrap', 
+            \ 'et', 'mouse', 'ls', 'stal', 'bg', 'fenc', 'sh', 
+            \ 'cul', 'textwidth'] + g:love_support_option
+
+let s:love_gui_default_option = ['gfn', 'gfw', 'go', 'linespace'] + g:love_gui_support_option
 
 if !exists('g:love_config_file')
     if !exists('$VIMFILES')
         if has('unix')
-            let $VIMFILES = $HOME.'/.vim'
+            let $VIMFILES = $HOME.'/vimfiles'
         else
-            let $VIMFILES = $VIM.'/vimfiles'
+            let $VIMFILES = $HOME.'/.vim'
         endif
     endif
-    let g:love_config_file = $VIMFILES.'/love.ini'
+    let g:love_config_file = $VIMFILES.'/.love.vim'
 endif
 
+if !exists('g:love_gui_config_file')
+    let g:love_gui_config_file = $VIMFILES.'/.gui_love.vim'
+endif
 
 
 " write to ini file
 function! love#Love() abort
     if  filereadable(g:love_config_file)
-        let l:tmp_dict = IniParser#Read(g:love_config_file)
-    else
-        let l:tmp_dict = {'basic':{},'advance':{}}
+        if delete(g:love_config_file)
+            call s:EchoWarning('delete '.g:love_config_file.'failed!')
+        endif
     endif
+    let l:tmp_list=[]
 
     for l:i in s:love_default_option
         let l:new_val =s:GetOptionValue(l:i)
-        let l:is_key_exist = get(l:tmp_dict['basic'],l:i,-99)
-
-        "exist and not equal
-        if  l:is_key_exist != -99 && l:tmp_dict['basic'][l:i] != l:new_val
-            let l:tmp_dict['basic'][l:i]=l:new_val
-        elseif l:is_key_exist == -99  
-            let l:tmp_dict['basic'][l:i]=l:new_val
+        if l:new_val =~# '\v^\d+$'
+            call add(l:tmp_list, 'let &'.l:i.'='.l:new_val)
+        else
+            call add(l:tmp_list, 'set '.l:i.'='.escape(l:new_val, ' \|'))
         endif
     endfor
-    "specfial option &advance
-    if exists('g:colors_name')
-        let l:is_key_exist = get(l:tmp_dict['advance'],l:i,-99)
-        if l:is_key_exist != -99 && l:tmp_dict['advance']['colorscheme'] != g:colors_name
-            let l:tmp_dict['advance']['colorscheme']=g:colors_name
-        elseif l:is_key_exist == -99
-            let l:tmp_dict['advance']['colorscheme']=g:colors_name
+
+    let l:ret=0
+    if has('gui_running')
+        if  filereadable(g:love_gui_config_file)
+            if delete(g:love_gui_config_file)
+                call s:EchoWarning('delete '.g:love_gui_config_file.'failed!')
+            endif
         endif
+        let l:tmp_gui_list=[]
+        for l:i in s:love_gui_default_option
+            let l:new_val =s:GetOptionValue(l:i)
+            if l:new_val =~# '\v^\d+$'
+                call add(l:tmp_gui_list, 'let &'.l:i.'='.l:new_val)
+            else
+                call add(l:tmp_gui_list, 'set '.l:i.'='.escape(l:new_val, ' \|'))
+            endif
+        endfor
+        let l:ret += writefile(l:tmp_gui_list, g:love_gui_config_file)
     endif
 
-    let l:ret = IniParser#Write(l:tmp_dict,g:love_config_file)
+    "specfial option &advance
+    if exists('g:colors_name')
+        call add(l:tmp_list, 'colorscheme '.g:colors_name)
+    endif
+
+    let l:ret += writefile(l:tmp_list, g:love_config_file)
     "return list if success
-    if type(l:ret) != type([])
+    if l:ret != 0
         call s:EchoWarning('Save falied!Please check the file permission.')
     else
         call s:EchoWarning('Setting have been saved!') 
@@ -95,8 +116,8 @@ endfunction
 " clear config file
 "
 function! love#LoveClean() abort
-    if !delete(g:love_config_file)
-        call s:EchoWarning(g:love_config_file.' has been deleted from disk')
+    if !delete(g:love_config_file) && !delete(g:love_gui_config_file)
+        call s:EchoWarning('config has been deleted from disk')
     endif
 endfunction
 
@@ -107,30 +128,11 @@ endfunction
 " read then apply setting
 function! love#Apply() abort
     if filereadable(g:love_config_file)
-        let l:tmp_dict = IniParser#Read(g:love_config_file)
-        if type(l:tmp_dict) == type({})
-            for l:i in s:love_default_option
-                let l:is_key_exist =  get(l:tmp_dict['basic'],l:i,-99)
-                if  l:is_key_exist != -99 
-                    if  l:i =~# '\v^g(f[nw])|(uifont(wide)?)$' && l:tmp_dict['basic'][l:i] ==? ''
-                        continue  "ignore empty gui font setting
-                    endif
-                    if l:tmp_dict['basic'][l:i] =~# '\v^\d+$'
-                        exec ':let &' .l:i .'=' .l:tmp_dict['basic'][l:i]
-                    else
-                        exec 'set '.l:i.'='.escape(l:tmp_dict['basic'][l:i],' \|')
-                    endif
-                else
-                    if l:is_key_exist == -99 | call s:EchoWarning('No Such key: '.l:i.',try :LoveClean') | endif
-                endif
-            endfor
-            if get(l:tmp_dict['advance'],'colorscheme',-99) != -99
-                exec 'colorscheme '.l:tmp_dict['advance']['colorscheme']
-            else
-                call s:EchoWarning('No Such key!Try :LoveClean first.')
-            endif
-        else
-            call s:EchoWarning('Apply failed.Try :LoveClean first.')
+        execute 'source'.g:love_config_file
+    endif
+    if has('gui_running')
+        if filereadable(g:love_gui_config_file)
+            execute 'source'.g:love_gui_config_file
         endif
     endif
 endfunction
