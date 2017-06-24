@@ -128,11 +128,11 @@ endfunction
 " read then apply setting
 function! love#Apply() abort
     if filereadable(g:love_config_file)
-        execute 'source'.g:love_config_file
+        silent! execute 'source'.g:love_config_file
     endif
     if has('gui_running')
         if filereadable(g:love_gui_config_file)
-            execute 'source'.g:love_gui_config_file
+            silent! execute 'source'.g:love_gui_config_file
         endif
     endif
 endfunction
