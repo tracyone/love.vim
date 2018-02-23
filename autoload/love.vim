@@ -41,7 +41,7 @@ endif
 
 
 let s:love_default_option = ['cmdheight', 'nu', 'rnu', 'ic', 'wrap', 
-            \ 'et', 'mouse', 'ls', 'stal', 'bg', 'fenc', 'sh', 
+            \ 'mouse', 'ls', 'stal', 'bg', 'fenc', 'sh', 
             \ 'cul', 'textwidth'] + g:love_support_option
 
 let s:love_gui_default_option = ['gfn', 'gfw', 'go', 'linespace'] + g:love_gui_support_option
