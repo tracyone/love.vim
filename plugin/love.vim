@@ -23,8 +23,8 @@
 " }}}
 "=============================================================================
 
-command! Love call love#Love()
+command! -nargs=? Love call love#Love(<args>)
 
-command! LoveClean call love#LoveClean()
+command! -nargs=? LoveClean call love#LoveClean(<args>)
 
 call love#Apply()

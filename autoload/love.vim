@@ -63,10 +63,22 @@ endif
 
 
 " write to ini file
-function! love#Love() abort
-    if  filereadable(g:love_config_file)
-        if delete(g:love_config_file)
-            call s:EchoWarning('delete '.g:love_config_file.'failed!')
+function! love#Love(...) abort
+    let l:save_local = 0
+    if len(a:000) == 1
+        let l:save_local = a:1
+    endif
+    if l:save_local == 1
+        let l:love_config_file = '.love.vim'
+        let l:gui_love_config_file = '.gui_love.vim'
+    else
+        let l:love_config_file = g:love_config_file
+        let l:gui_love_config_file = g:love_gui_config_file
+    endif
+
+    if  filereadable(l:love_config_file)
+        if delete(l:love_config_file)
+            call s:EchoWarning('delete '.l:love_config_file.'failed!')
         endif
     endif
     let l:tmp_list=[]
@@ -82,9 +94,9 @@ function! love#Love() abort
 
     let l:ret=0
     if has('gui_running')
-        if  filereadable(g:love_gui_config_file)
-            if delete(g:love_gui_config_file)
-                call s:EchoWarning('delete '.g:love_gui_config_file.'failed!')
+        if  filereadable(l:gui_love_config_file)
+            if delete(l:gui_love_config_file)
+                call s:EchoWarning('delete '.l:gui_love_config_file.'failed!')
             endif
         endif
         let l:tmp_gui_list=[]
@@ -96,7 +108,7 @@ function! love#Love() abort
                 call add(l:tmp_gui_list, 'set '.l:i.'='.escape(l:new_val, ' \|'))
             endif
         endfor
-        let l:ret += writefile(l:tmp_gui_list, g:love_gui_config_file)
+        let l:ret += writefile(l:tmp_gui_list, l:gui_love_config_file)
     endif
 
     "specfial option &advance
@@ -104,7 +116,7 @@ function! love#Love() abort
         call add(l:tmp_list, 'colorscheme '.g:colors_name)
     endif
 
-    let l:ret += writefile(l:tmp_list, g:love_config_file)
+    let l:ret += writefile(l:tmp_list, l:love_config_file)
     "return list if success
     if l:ret != 0
         call s:EchoWarning('Save falied!Please check the file permission.')
@@ -115,9 +127,19 @@ endfunction
 
 " clear config file
 "
-function! love#LoveClean() abort
-    if !delete(g:love_config_file) && !delete(g:love_gui_config_file)
-        call s:EchoWarning('config has been deleted from disk')
+function! love#LoveClean(...) abort
+    let l:delete_local = 0
+    if len(a:000) == 1
+        let l:delete_local = a:1
+    endif
+    if l:delete_local == 1
+        if !delete('.love.vim') && !delete('.gui_love.vim')
+            call s:EchoWarning('local config has been deleted from disk')
+        endif
+    else
+        if !delete(g:love_config_file) && !delete(g:love_gui_config_file)
+            call s:EchoWarning('config has been deleted from disk')
+        endif
     endif
 endfunction
 
@@ -127,12 +149,20 @@ endfunction
 
 " read then apply setting
 function! love#Apply() abort
-    if filereadable(g:love_config_file)
-        silent! execute 'source '.g:love_config_file
+    if filereadable('.love.vim')
+        silent! execute 'source .love.vim'
+    else
+        if filereadable(g:love_config_file)
+            silent! execute 'source '.g:love_config_file
+        endif
     endif
     if has('gui_running')
-        if filereadable(g:love_gui_config_file)
-            silent! execute 'source '.g:love_gui_config_file
+        if filereadable('.gui_love.vim')
+            silent! execute 'source .gui_love.vim'
+        else
+            if filereadable(g:love_gui_config_file)
+                silent! execute 'source '.g:love_gui_config_file
+            endif
         endif
     endif
 endfunction
