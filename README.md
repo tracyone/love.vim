@@ -5,6 +5,7 @@
 
 
 <!-- vim-markdown-toc GFM -->
+
 * [Introdution](#introdution)
 * [Installation](#installation)
 * [config example](#config-example)
@@ -31,7 +32,7 @@ All you need to do is:
 3. execute :Love
 
 	```vim
-    "save setting
+    "save settings
     :Love
 	```
 
@@ -41,9 +42,18 @@ have been applied.
 5. clean love. you can clear your save config by executing following command.
 
 	```vim
-    "restore factory(==!) setting
+    "delete settings
     :LoveClean
 	```
+
+6. Maybe you want to save your settings just for current directory(project root?), love.vim can also save setting in current directory
+
+```vim
+"save settings in current directory
+:Love 1
+"delete settings in current directory
+:LoveClean 1
+```
 
 # Installation
 
